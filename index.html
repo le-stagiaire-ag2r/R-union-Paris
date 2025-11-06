@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordre du jour - Réunion d'équipe Paris</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 30%, #7aa8d8 60%, #b8d4e8 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animations de fond - Paris cityscape */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Soleil parisien */
+        .sun {
+            position: absolute;
+            top: 10%;
+            right: 12%;
+            font-size: 80px;
+            animation: sun-rotate 20s linear infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 255, 0, 0.6));
+        }
+        
+        @keyframes sun-rotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        /* Nuages */
+        .cloud {
+            position: absolute;
+            font-size: 35px;
+            opacity: 0.8;
+            animation: cloud-drift 15s linear infinite;
+        }
+        
+        .cloud:nth-child(2) { top: 15%; left: -100px; animation-delay: 0s; animation-duration: 18s; }
+        .cloud:nth-child(3) { top: 25%; left: -100px; animation-delay: 3s; animation-duration: 20s; }
+        .cloud:nth-child(4) { top: 20%; left: -100px; animation-delay: 6s; animation-duration: 16s; }
+        
+        @keyframes cloud-drift {
+            0% { transform: translateX(-100px); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateX(calc(100vw + 100px)); opacity: 0; }
+        }
+        
+        /* Tour Eiffel */
+        .eiffel {
+            position: absolute;
+            bottom: 0;
+            right: 5%;
+            font-size: 120px;
+            opacity: 0.6;
+            animation: sway 4s ease-in-out infinite;
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(0.5deg); }
+        }
+        
+        /* Oiseaux parisiens */
+        .bird {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.7;
+            animation: bird-fly 12s linear infinite;
+        }
+        
+        .bird:nth-child(5) { top: 8%; left: -50px; animation-delay: 0s; animation-duration: 14s; }
+        .bird:nth-child(6) { top: 12%; left: -50px; animation-delay: 2s; animation-duration: 16s; }
+        .bird:nth-child(7) { top: 18%; left: -50px; animation-delay: 4s; animation-duration: 13s; }
+        .bird:nth-child(8) { top: 22%; left: -50px; animation-delay: 6s; animation-duration: 15s; }
+        
+        @keyframes bird-fly {
+            0% { transform: translateX(-50px); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateX(calc(100vw + 50px)); opacity: 0; }
+        }
+        
+        /* Étoiles scintillantes */
+        .star {
+            position: absolute;
+            font-size: 15px;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        
+        .star:nth-child(9) { top: 8%; left: 8%; animation-delay: 0s; }
+        .star:nth-child(10) { top: 15%; left: 25%; animation-delay: 0.5s; }
+        .star:nth-child(11) { top: 10%; left: 45%; animation-delay: 1s; }
+        .star:nth-child(12) { top: 20%; left: 70%; animation-delay: 1.5s; }
+        .star:nth-child(13) { top: 12%; left: 85%; animation-delay: 2s; }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 25px;
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255,255,255,0.15);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .header:hover {
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.12);
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .day-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 25px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06), 0 5px 15px rgba(0,0,0,0.04);
+            transition: all 0.4s ease;
+            position: relative;
+            border: 2px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(6px);
+        }
+        
+        .day-card:hover {
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.12);
+        }
+        
+        .day-header {
+            padding: 30px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, rgba(30,60,114,0.75) 0%, rgba(42,82,152,0.65) 50%, rgba(122,168,216,0.75) 100%);
+        }
+        
+        .day-header:hover {
+            transform: scale(1.05);
+        }
+        
+        .day-content {
+            padding: 0;
+        }
+        
+        .session {
+            padding: 30px;
+            border-bottom: 1px solid rgba(224,242,254,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .session:hover {
+            background: rgba(240,249,255,0.2);
+            transform: scale(1.02);
+            border-radius: 15px;
+        }
+        
+        .session:last-child {
+            border-bottom: none;
+        }
+        
+        .time {
+            font-weight: bold;
+            color: #0277bd;
+            font-size: 1.4em;
+            background: linear-gradient(45deg, #e1f5fe, #b3e5fc);
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(2, 119, 189, 0.2);
+            margin-bottom: 15px;
+            min-width: 160px;
+        }
+        
+        .activity {
+            width: 100%;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            color: #01579b;
+            font-size: 1.4em;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+        
+        .activity-subtitle {
+            color: #0277bd;
+            font-size: 1.1em;
+            font-style: italic;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.6);
+        }
+        
+        .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            margin: 0 auto 15px auto;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .icon:hover {
+            transform: scale(1.2) rotate(10deg);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .welcome { 
+            background: linear-gradient(45deg, #fff3e0, #ffcc02);
+            animation: pulse 2s infinite;
+        }
+        .presentation { 
+            background: linear-gradient(45deg, #e8f5e8, #4caf50);
+            animation: pulse 2s infinite 0.5s;
+        }
+        .workshop { 
+            background: linear-gradient(45deg, #f3e5f5, #9c27b0);
+            animation: pulse 2s infinite 1s;
+        }
+        .talk { 
+            background: linear-gradient(45deg, #fce4ec, #e91e63);
+            animation: pulse 2s infinite 1.5s;
+        }
+        .meal { 
+            background: linear-gradient(45deg, #e3f2fd, #2196f3);
+            animation: pulse 2s infinite 2s;
+        }
+        .important { 
+            background: linear-gradient(45deg, #ffebee, #f44336);
+            animation: pulse 2s infinite 2.5s;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0,0,0,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0,0,0,0); }
+            100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+        }
+        
+        .special-note {
+            background: rgba(255,248,225,0.6);
+            border: 2px solid rgba(255,193,7,0.4);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px;
+            font-style: italic;
+            color: #e65100;
+            position: relative;
+            animation: wiggle 3s ease-in-out infinite;
+            backdrop-filter: blur(3px);
+        }
+        
+        @keyframes wiggle {
+            0%, 7% { transform: rotateZ(0); }
+            15% { transform: rotateZ(-1deg); }
+            20% { transform: rotateZ(1deg); }
+            25% { transform: rotateZ(0); }
+        }
+        
+        .emoji-float {
+            position: fixed;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: float-up 3s ease-out forwards;
+        }
+        
+        @keyframes float-up {
+            0% { 
+                opacity: 1; 
+                transform: translateY(0) rotate(0deg); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(-200px) rotate(360deg); 
+            }
+        }
+        
+        .click-me {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: bounce-side 2s infinite;
+            z-index: 1000;
+            border: none;
+            width: 60px;
+            height: 60px;
+        }
+        
+        @keyframes bounce-side {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(0); }
+            40% { transform: translateX(-10px); }
+            60% { transform: translateX(-5px); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .session {
+                padding: 25px 20px;
+            }
+            
+            .time {
+                font-size: 1.2em;
+                min-width: 140px;
+            }
+            
+            .activity-title {
+                font-size: 1.2em;
+            }
+            
+            .activity-subtitle {
+                font-size: 1em;
+            }
+            
+            .icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+            
+            .click-me {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="sun">☀️</div>
+        <div class="cloud">☁️</div>
+        <div class="cloud">☁️</div>
+        <div class="cloud">☁️</div>
+        <div class="bird">🐦</div>
+        <div class="bird">🐦‍⬛</div>
+        <div class="bird">🐦</div>
+        <div class="bird">🐦‍⬛</div>
+        <div class="star">✨</div>
+        <div class="star">✨</div>
+        <div class="star">✨</div>
+        <div class="star">✨</div>
+        <div class="star">✨</div>
+        <div class="eiffel">🗼</div>
+    </div>
+
+    <button class="click-me" onclick="createParisMagic()" title="Cliquez pour un peu de magie parisienne !">✨</button>
+
+    <div class="container">
+        <div class="header" onclick="headerClick()">
+            <h1>🗼 Ordre du Jour</h1>
+            <p>Paris ✨<br>
+            📅 Journée importante 💼</p>
+        </div>
+        
+        <div class="day-card">
+            <div class="day-header" onclick="dayHeaderClick()">
+                🌅 Réunion d'Équipe - Lundi 17 Novembre 🚀
+            </div>
+            <div class="day-content">
+                <div class="session" onclick="sessionClick('welcome')">
+                    <div class="time">9h00 - 9h30</div>
+                    <div class="icon welcome">☕</div>
+                    <div class="activity">
+                        <div class="activity-title">Café d'accueil</div>
+                        <div class="activity-subtitle">Bienvenue à tous ! 👋</div>
+                    </div>
+                </div>
+                
+                <div class="session" onclick="sessionClick('presentation')">
+                    <div class="time">9h30 - 10h30</div>
+                    <div class="icon presentation">📊</div>
+                    <div class="activity">
+                        <div class="activity-title">Résultats et Activités</div>
+                        <div class="activity-subtitle">Présenté par Clara 📈</div>
+                    </div>
+                </div>
+                
+                <div class="session" onclick="sessionClick('presentation')">
+                    <div class="time">10h30 - 12h00</div>
+                    <div class="icon presentation">🔍</div>
+                    <div class="activity">
+                        <div class="activity-title">Actualités XRM</div>
+                        <div class="activity-subtitle">Présenté par Fanny 💻</div>
+                    </div>
+                </div>
+                
+                <div class="session" onclick="sessionClick('talk')">
+                    <div class="time">12h00 - 12h30</div>
+                    <div class="icon talk">🗺️</div>
+                    <div class="activity">
+                        <div class="activity-title">Zone de chalandise & Suivi des ventes</div>
+                        <div class="activity-subtitle">Présenté par Paul 📍</div>
+                    </div>
+                </div>
+                
+                <div class="session" onclick="sessionClick('meal')">
+                    <div class="time">12h30 - 14h00</div>
+                    <div class="icon meal">🍽️</div>
+                    <div class="activity">
+                        <div class="activity-title">Déjeuner</div>
+                        <div class="activity-subtitle">Bon appétit ! 😋</div>
+                    </div>
+                </div>
+                
+                <div class="session" onclick="sessionClick('workshop')">
+                    <div class="time">14h00 - 16h00</div>
+                    <div class="icon workshop">🎓</div>
+                    <div class="activity">
+                        <div class="activity-title">Atelier Almia</div>
+                        <div class="activity-subtitle">Animé par Gary Achard 🎯</div>
+                    </div>
+                </div>
+                
+                <div class="session" onclick="sessionClick('presentation')">
+                    <div class="time">16h00 - 16h15</div>
+                    <div class="icon presentation">🏁</div>
+                    <div class="activity">
+                        <div class="activity-title">Conclusion</div>
+                        <div class="activity-subtitle">Par Clara 🎤</div>
+                    </div>
+                </div>
+            </div>
+            <div class="special-note" onclick="noteClick()">
+                ⚠️ <strong>ATTENTION !</strong> N'oubliez pas de prendre vos PC ! 💻  
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emojis = ['🎉', '🎊', '✨', '🌟', '🎈', '🎁', '🚀', '🌈', '🦄', '🎯', '🏆', '💫', '⭐'];
+        const parisEmojis = ['🗼', '✨', '🇫🇷', '🎨', '🥐', '🍷', '🌹', '👔'];
+        
+        function playClickSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(220, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+        
+        function createParisMagic() {
+            playClickSound();
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'emoji-float';
+                    emoji.textContent = parisEmojis[Math.floor(Math.random() * parisEmojis.length)];
+                    emoji.style.left = Math.random() * window.innerWidth + 'px';
+                    emoji.style.top = Math.random() * window.innerHeight + 'px';
+                    emoji.style.fontSize = (Math.random() * 20 + 25) + 'px';
+                    document.body.appendChild(emoji);
+                    
+                    setTimeout(() => {
+                        emoji.remove();
+                    }, 4000);
+                }, i * 100);
+            }
+        }
+        
+        function sessionClick(type) {
+            playClickSound();
+            const emojiSets = {
+                welcome: ['☕', '👋', '😊', '🎉', '💪'],
+                presentation: ['📊', '📈', '🎯', '💡', '✨'],
+                workshop: ['🎓', '🤝', '💡', '🧠', '🎯'],
+                talk: ['🎤', '💬', '🗣️', '📢', '👥'],
+                meal: ['🍽️', '😋', '🍷', '🥐', '🥳'],
+            };
+            
+            const selectedEmojis = emojiSets[type] || emojis;
+            createFloatingEmojis(selectedEmojis);
+        }
+        
+        function createFloatingEmojis(emojiSet) {
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'emoji-float';
+                    emoji.textContent = emojiSet[Math.floor(Math.random() * emojiSet.length)];
+                    emoji.style.left = Math.random() * window.innerWidth + 'px';
+                    emoji.style.top = Math.random() * window.innerHeight + 'px';
+                    document.body.appendChild(emoji);
+                    
+                    setTimeout(() => {
+                        emoji.remove();
+                    }, 3000);
+                }, i * 150);
+            }
+        }
+        
+        function headerClick() {
+            playClickSound();
+            createParisMagic();
+        }
+        
+        function dayHeaderClick() {
+            playClickSound();
+            createFloatingEmojis(['🗼', '✨', '🚀', '💼', '🎯']);
+        }
+        
+        function noteClick() {
+            playClickSound();
+            createFloatingEmojis(['💻', '⚠️', '🎓', '💡', '✅']);
+        }
+        
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                createParisMagic();
+            }, 1000);
+        });
+        
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                createFloatingEmojis([emojis[Math.floor(Math.random() * emojis.length)]]);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
